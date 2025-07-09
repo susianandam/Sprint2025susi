@@ -22,7 +22,7 @@ inner join transaction as tran
  select   com.company_name ,  Avg(tran.amount) as sales
 from company as com
 inner join transaction as tran
- on com.id = tran .company_id 
+ on com.id = tran .company_id
  group by com.company_name
  order by sales DESC
  limit 1
@@ -39,13 +39,6 @@ inner join transaction as tran
 ;                     
                   
  
-select *
-from transaction  as tran
-where tran. company_id IN(
-                          select com.id from company as com
-                          where country = 'Germany' and tran.company_id = com.id
-                          );
-                          
                           
 -- Lists companies that have made transactions for an amount greater than the average of all transactions.
  
@@ -101,7 +94,7 @@ order by Totalsales Desc
 -- the transactions carried out by companies that are located in the same country as this company.
 
 -- Show the list applying JOIN and subqueries.
--- Show the list applying only subqueries.
+
  
 select *,com.country
 from transaction as tran
@@ -112,7 +105,7 @@ where com.country =
 where company_name ='Non Institute'
  );
  
- 
+ -- Show the list applying only subqueries.
 
 select *  from transaction as tran
 where tran.company_id in (select id from company as com 
@@ -152,8 +145,11 @@ select * from company;
 select * from transaction;
 
 select count(tran.amount),com.company_name,
-(select count(tran.amount) > 400 as Max_trans )
- from 
+ CASE
+   when count(tran.amount)> 400 then 'More than 400'
+   else '400 or less'
+   end as Max_or_Min
+   from 
  transaction as tran
  inner join company as com
  on tran.company_id = com.id
